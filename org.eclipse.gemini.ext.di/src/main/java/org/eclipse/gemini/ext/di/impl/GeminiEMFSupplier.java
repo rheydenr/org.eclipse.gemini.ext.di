@@ -28,9 +28,14 @@ import org.eclipse.gemini.ext.di.GeminiPersistenceProperty;
 import org.eclipse.gemini.ext.di.GeminiPersistenceUnit;
 import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.jpa.EntityManagerFactoryBuilder;
 
-@Component(immediate = true, servicefactory = true)
+@Component(immediate = true, name = "geminiEMF", 
+property = {"dependency.injection.annotation:String=org.eclipse.gemini.ext.di.GeminiPersistenceUnit"},
+service = ExtendedObjectSupplier.class )
 public class GeminiEMFSupplier extends ExtendedObjectSupplier {
 
 	private boolean trace = false;
@@ -203,10 +208,11 @@ public class GeminiEMFSupplier extends ExtendedObjectSupplier {
 	/* ================================================ */
 
 	protected void activate() {
-		trace = (System.getProperty("GEMINI_DEBUG") != null && System.getProperty("GEMINI_DEBUG").equals("true"));
+		trace = Boolean.getBoolean("GEMINI_DEBUG");
 		trace("service activated");
 	}
 
+	@Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MULTIPLE)
 	protected void bindEntityManagerFactory(EntityManagerFactory emf, Map<String, String> properties) {
 		trace("bindEntityManagerFactory() with " + properties + " toString: " + emf);
 		emfs.put(getUnitName(properties), emf);
@@ -222,6 +228,7 @@ public class GeminiEMFSupplier extends ExtendedObjectSupplier {
 		updateRequestors(getUnitName(properties));
 	}
 
+    @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MULTIPLE)
 	protected void bindEntityManagerFactoryBuilder(EntityManagerFactoryBuilder emfb, Map<String, String> properties) {
 		trace("bindEntityManagerFactoryBuilder() with " + properties);
 		emfbs.put(getUnitName(properties), emfb);
@@ -237,6 +244,7 @@ public class GeminiEMFSupplier extends ExtendedObjectSupplier {
 		updateRequestors(getUnitName(properties));
 	}
 
+    @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.OPTIONAL)
 	protected void bindPreferencesService(IPreferencesService prefService) {
 		this.prefService = prefService;
 	}

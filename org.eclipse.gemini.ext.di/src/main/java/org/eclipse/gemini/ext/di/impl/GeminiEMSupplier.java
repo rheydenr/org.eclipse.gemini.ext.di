@@ -14,13 +14,21 @@ import java.util.Map;
 
 import javax.persistence.EntityManagerFactory;
 
+import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.e4.core.di.suppliers.ExtendedObjectSupplier;
 import org.eclipse.e4.core.di.suppliers.IObjectDescriptor;
 import org.eclipse.e4.core.di.suppliers.IRequestor;
 import org.eclipse.gemini.ext.di.GeminiPersistenceContext;
 import org.eclipse.gemini.ext.di.GeminiPersistenceProperty;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.component.annotations.Reference;
+import org.osgi.service.component.annotations.ReferenceCardinality;
+import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.jpa.EntityManagerFactoryBuilder;
 
-@Component(immediate = true, servicefactory = true)
+@Component(immediate = true, name="geminiEM",
+property = {"dependency.injection.annotation:String=org.eclipse.gemini.ext.di.GeminiPersistenceContext"},
+service = ExtendedObjectSupplier.class)
 public class GeminiEMSupplier extends GeminiEMFSupplier {
 
     @Override
@@ -58,4 +66,33 @@ public class GeminiEMSupplier extends GeminiEMFSupplier {
         trace(properties.toString());
         return properties;
     }
+    
+    @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MULTIPLE)
+    protected void bindEntityManagerFactory(EntityManagerFactory emf, Map<String, String> properties) {
+        super.bindEntityManagerFactory(emf, properties);
+    }
+    
+    protected void unbindEntityManagerFactory(EntityManagerFactory emf, Map<String, String> properties) {
+        super.unbindEntityManagerFactory(emf, properties);
+    }
+    
+
+    @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.MULTIPLE)
+    protected void bindEntityManagerFactoryBuilder(EntityManagerFactoryBuilder emfb, Map<String, String> properties) {
+        super.bindEntityManagerFactoryBuilder(emfb, properties);
+    }
+
+    protected void unbindEntityManagerFactoryBuilder(EntityManagerFactoryBuilder emfb, Map<String, String> properties) {
+        super.unbindEntityManagerFactoryBuilder(emfb, properties);
+    }
+
+    @Reference(policy = ReferencePolicy.DYNAMIC, cardinality = ReferenceCardinality.OPTIONAL)
+    protected void bindPreferencesService(IPreferencesService prefService) {
+        super.bindPreferencesService(prefService);
+    }
+
+    protected void unbindPreferencesService(IPreferencesService prefService) {
+        super.unbindPreferencesService(prefService);
+    }
+    
 }

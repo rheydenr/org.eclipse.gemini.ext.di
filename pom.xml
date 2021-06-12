@@ -1,49 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.eclipse.gemini.ext.di</groupId>
-  <artifactId>org.eclipse.gemini.ext.di.parent</artifactId>
-  <version>1.1.2-SNAPSHOT</version>
-  <packaging>pom</packaging>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.eclipse.gemini.ext.di</groupId>
+	<artifactId>org.eclipse.gemini.ext.di.parent</artifactId>
+	<version>1.2.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
 	<properties>
-		<tycho.version>0.16.0</tycho.version>
-		<maven.compiler.source>1.7</maven.compiler.source>
-		<maven.compiler.target>1.7</maven.compiler.target>
+		<tycho.version>2.3.0</tycho.version>
 		<encoding>UTF-8</encoding>
 	</properties>
-  <modules>
-    <module>org.eclipse.gemini.ext.di</module>
-    <module>org.eclipse.gemini.ext.di.feature</module>
-    <module>org.eclipse.gemini.ext.di.updatesite</module>
-  </modules>
-  <build>
-    <plugins>
+	<modules>
+		<module>org.eclipse.gemini.ext.di</module>
+		<module>org.eclipse.gemini.ext.di.feature</module>
+		<module>org.eclipse.gemini.ext.di.updatesite</module>
+	</modules>
+	<build>
+	    <!-- To define the plugin version in your parent POM -->
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.eclipse.tycho</groupId>
+          <artifactId>tycho-versions-plugin</artifactId>
+          <version>${tycho.version}</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+		<plugins>
 			<plugin>
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
 				<extensions>true</extensions>
 			</plugin>
-    </plugins>
-  </build>
-<repositories>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
+				<configuration>
+					<release>11</release>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	<repositories>
 		<repository>
-			<id>eclipse-juno</id>
+			<id>eclipse-2021-03</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/juno</url>
+			<url>http://download.eclipse.org/releases/2021-03</url>
 		</repository>
-      </repositories>
-<pluginRepositories>
-  <pluginRepository>
-    <id>tycho-snapshots</id>
-    <url>https://oss.sonatype.org/content/groups/public/</url>
-  </pluginRepository>
-</pluginRepositories>
-	<name>Gemini JPA Ext DI</name>
-	<url>https://github.com/muuki88/org.eclipse.gemini.ext.di</url>
+		<repository>
+			<id>eclipselink</id>
+			<layout>p2</layout>
+			<url>http://download.eclipse.org/rt/eclipselink/updates</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>tycho-snapshots</id>
+			<url>https://oss.sonatype.org/content/groups/public/</url>
+		</pluginRepository>
+	</pluginRepositories>
+	<name>Gemini JPA Ext DI (fork)</name>
+	<url>https://github.com/rheydenr/org.eclipse.gemini.ext.di</url>
 	<issueManagement>
 		<system>GitHub</system>
-		<url>https://github.com/muuki88/org.eclipse.gemini.ext.di/issues</url>
+		<url>https://github.com/rheydenr/org.eclipse.gemini.ext.di/issues</url>
 	</issueManagement>
 </project>
